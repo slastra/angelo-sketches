@@ -28,13 +28,14 @@ export interface TweakState {
 }
 
 const DEFAULTS: TweakState = {
-  paperTexture: 'dot-grid',
-  inkColor: 'navy',
+  paperTexture: 'graph',
+  inkColor: 'black',
   layout: 'feed',
   animateIn: true,
 }
 
-const KEY = 'angelo.tweaks.v1'
+// Bumped to invalidate older sessions that persisted dot-grid / navy tweaks.
+const KEY = 'angelo.tweaks.v2'
 
 export function useTweaks() {
   const state = useState<TweakState>('tweaks', () => ({ ...DEFAULTS }))
@@ -44,10 +45,10 @@ export function useTweaks() {
       try {
         const raw = localStorage.getItem(KEY)
         if (raw) {
-          const parsed = JSON.parse(raw) as Partial<TweakState> & { layout?: string }
-          // Coerce removed layout values from older sessions.
-          if (parsed.layout !== 'feed' && parsed.layout !== 'grid') parsed.layout = 'grid'
-          state.value = { ...DEFAULTS, ...(parsed as Partial<TweakState>) }
+          const parsed = JSON.parse(raw) as { layout?: string }
+          // Only `layout` is user-tweakable now; paper/ink are locked.
+          const layout = parsed.layout === 'feed' || parsed.layout === 'grid' ? parsed.layout : DEFAULTS.layout
+          state.value = { ...DEFAULTS, layout }
         }
       } catch { /* ignore */ }
     })

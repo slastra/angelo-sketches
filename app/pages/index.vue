@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useTweaks, INK_COLORS, type TweakState } from '~/composables/useTweaks'
+import { useTweaks, INK_COLORS } from '~/composables/useTweaks'
 import { useSketches, type Sketch } from '~/composables/useSketches'
 
 const { tweaks, setTweak } = useTweaks()
@@ -9,11 +9,11 @@ const ink = computed(() => INK_COLORS[tweaks.value.inkColor])
 const zoomed = ref<Sketch | null>(null)
 const feedIndex = ref(0)
 
-function onTweak<K extends keyof TweakState>(k: K, v: TweakState[K]) {
-  setTweak(k, v)
-}
-
 const list = computed(() => sketches.value || [])
+
+function setLayout(v: 'feed' | 'grid') {
+  setTweak('layout', v)
+}
 </script>
 
 <template>
@@ -21,6 +21,13 @@ const list = computed(() => sketches.value || [])
     <PaperBackground :texture="tweaks.paperTexture" />
 
     <CornerMark :ink="ink" />
+
+    <LayoutSwitcher
+      v-if="list.length"
+      :layout="tweaks.layout"
+      :ink="ink"
+      @change="setLayout"
+    />
 
     <Counter
       v-if="tweaks.layout === 'feed' && list.length"
@@ -61,8 +68,6 @@ const list = computed(() => sketches.value || [])
     >scroll ↓</div>
 
     <ZoomModal :sketch="zoomed" :ink="ink" @close="zoomed = null" />
-
-    <TweaksPanel :tweaks="tweaks" @update:tweak="onTweak" />
   </div>
 </template>
 

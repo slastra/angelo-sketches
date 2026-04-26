@@ -77,7 +77,7 @@ function onPick() {
   padding: 24px 16px;
   cursor: pointer;
   transition: transform 0.2s, opacity 0.2s;
-  color: oklch(0.24 0.05 255);
+  color: oklch(0.18 0.01 270);
   opacity: 0.55;
 }
 .dz:hover { transform: translateY(-1px); opacity: 0.95; }

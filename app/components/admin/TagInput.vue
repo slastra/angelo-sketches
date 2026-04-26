@@ -77,7 +77,7 @@ function onKey(e: KeyboardEvent) {
 </template>
 
 <style scoped>
-.tag-input-wrap { color: oklch(0.24 0.05 255); }
+.tag-input-wrap { color: oklch(0.18 0.01 270); }
 .tag-input {
   display: flex;
   flex-wrap: wrap;

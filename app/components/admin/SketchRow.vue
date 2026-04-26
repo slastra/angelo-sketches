@@ -110,7 +110,7 @@ function onDragEndLocal() {
           :width="64"
           :height="80"
           :seed="sketch.id"
-          ink="oklch(0.24 0.05 255)"
+          ink="oklch(0.18 0.01 270)"
           :image="sketch.image"
           :stroke-width="0.8"
           :inset="3"
@@ -169,7 +169,7 @@ function onDragEndLocal() {
 
 <style scoped>
 .row-wrap {
-  color: oklch(0.24 0.05 255);
+  color: oklch(0.18 0.01 270);
   background: rgba(255, 255, 255, 0.4);
   border-radius: 4px;
   transition:
@@ -195,7 +195,7 @@ function onDragEndLocal() {
   gap: 14px;
   padding: 12px 14px;
 }
-.grip { color: oklch(0.24 0.05 255); opacity: 0.4; }
+.grip { color: oklch(0.18 0.01 270); opacity: 0.4; }
 
 .thumb-wrap {
   width: 64px;
@@ -216,7 +216,7 @@ function onDragEndLocal() {
   outline: 0;
   background: transparent;
   font-size: 15px;
-  color: oklch(0.24 0.05 255);
+  color: oklch(0.18 0.01 270);
   font-family: var(--hand);
 }
 .date-input::-webkit-calendar-picker-indicator { opacity: 0.55; cursor: pointer; }
@@ -233,7 +233,7 @@ function onDragEndLocal() {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: oklch(0.24 0.05 255);
+  color: oklch(0.18 0.01 270);
   opacity: 0.55;
   transition: opacity 0.15s;
 }

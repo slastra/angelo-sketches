@@ -20,8 +20,8 @@ async function submit() {
 
 <template>
   <div class="app">
-    <PaperBackground texture="dot-grid" />
-    <CornerMark ink="oklch(0.24 0.05 255)" />
+    <PaperBackground texture="graph" />
+    <CornerMark ink="oklch(0.18 0.01 270)" />
 
     <main class="login-wrap">
       <JitteredBorder seed="login-card" :stroke-width="1.1" :jitter="1.4" :double-stroke="true" class="login-card">
@@ -61,7 +61,7 @@ async function submit() {
 .login-card {
   width: 280px;
   padding: 32px 28px;
-  color: oklch(0.24 0.05 255);
+  color: oklch(0.18 0.01 270);
 }
 .login-card form {
   display: flex;

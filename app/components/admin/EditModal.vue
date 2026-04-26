@@ -174,7 +174,7 @@ onBeforeUnmount(() => {
   max-width: 1100px;
   height: 100%;
   max-height: 880px;
-  color: oklch(0.24 0.05 255);
+  color: oklch(0.18 0.01 270);
 }
 
 .edit-hd {
@@ -200,7 +200,7 @@ onBeforeUnmount(() => {
 }
 .cropper :deep(.vue-advanced-cropper__background),
 .cropper :deep(.vue-advanced-cropper__foreground) {
-  background: oklch(0.24 0.05 255);
+  background: oklch(0.18 0.01 270);
 }
 
 .controls {
@@ -242,7 +242,7 @@ onBeforeUnmount(() => {
 .rot-btn:hover { opacity: 1; background: rgba(28, 36, 64, 0.06); }
 .fine input[type="range"] {
   flex: 1;
-  accent-color: oklch(0.24 0.05 255);
+  accent-color: oklch(0.18 0.01 270);
 }
 .fine-readout {
   width: 50px;
@@ -269,7 +269,7 @@ onBeforeUnmount(() => {
   padding: 0 16px;
   border: 0;
   border-radius: 6px;
-  background: oklch(0.24 0.05 255);
+  background: oklch(0.18 0.01 270);
   color: #f7f4ec;
   font: inherit;
   font-size: 16px;

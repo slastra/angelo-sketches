@@ -57,7 +57,7 @@ async function logout() {
 
 <template>
   <div class="app admin-app">
-    <PaperBackground texture="dot-grid" />
+    <PaperBackground texture="graph" />
 
     <header class="admin-hd">
       <div class="hd-left">
@@ -106,7 +106,7 @@ async function logout() {
   -webkit-backdrop-filter: blur(20px);
   backdrop-filter: blur(20px);
   border-bottom: 0.5px solid rgba(0, 0, 0, 0.06);
-  color: oklch(0.24 0.05 255);
+  color: oklch(0.18 0.01 270);
 }
 .hd-left { display: flex; align-items: baseline; gap: 12px; }
 .mark-name { font-family: var(--hand-display); font-size: 22px; font-weight: 600; }
@@ -154,6 +154,6 @@ async function logout() {
   text-align: center;
   padding: 40px 0;
   opacity: 0.5;
-  color: oklch(0.24 0.05 255);
+  color: oklch(0.18 0.01 270);
 }
 </style>

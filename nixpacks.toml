@@ -1,0 +1,20 @@
+# Nixpacks config for Coolify deployment.
+# We run on the bun runtime in production because the server uses `bun:sqlite`.
+
+[phases.setup]
+nixPkgs = ['nodejs_22', 'bun']
+
+[phases.install]
+cmds = ['bun install --frozen-lockfile']
+
+[phases.build]
+cmds = ['bun run build']
+
+[start]
+cmd = 'bun --bun .output/server/index.mjs'
+
+[variables]
+HOST = '0.0.0.0'
+# PORT is supplied by Coolify at runtime.
+NODE_OPTIONS = '--max-old-space-size=4096'
+NUXT_TELEMETRY_DISABLED = '1'

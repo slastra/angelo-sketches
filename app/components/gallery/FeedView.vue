@@ -11,19 +11,27 @@ const props = defineProps<{
 const emit = defineEmits<{ zoom: [Sketch], 'index-change': [number] }>()
 
 const FEED_MAX_W = 560
-// Vertical breathing room reserved per page: top/bottom padding so a frame
-// never crowds against the corner mark or the bottom counter.
+// Nav bar sits above the scroller; subtract its height when computing how
+// tall a frame can be before it crowds the bottom of the viewport.
+const NAV_H = 56
+// Vertical breathing room reserved per page beyond the nav (top + bottom).
 const FEED_V_PAD = 120
 
-// Track viewport height so portrait sketches don't overflow short windows.
+// Track viewport so portrait sketches don't overflow short windows and so
+// the frame width shrinks below 560 on narrow screens.
+const viewportW = ref(1200)
 const viewportH = ref(900)
-function updateViewport() { viewportH.value = window.innerHeight }
+function updateViewport() {
+  viewportW.value = window.innerWidth
+  viewportH.value = window.innerHeight
+}
 
 const sized = computed(() => {
-  const maxH = Math.max(280, viewportH.value - FEED_V_PAD)
+  const maxW = Math.max(240, Math.min(FEED_MAX_W, viewportW.value - 32))
+  const maxH = Math.max(280, viewportH.value - NAV_H - FEED_V_PAD)
   return props.sketches.map(s => ({
     sketch: s,
-    ...sizeWithin(s.width, s.height, FEED_MAX_W, maxH),
+    ...sizeWithin(s.width, s.height, maxW, maxH),
   }))
 })
 

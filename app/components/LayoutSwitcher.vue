@@ -1,9 +1,15 @@
 <script setup lang="ts">
+import type { Theme } from '~/composables/useTweaks'
+
 defineProps<{
   layout: 'feed' | 'grid'
+  theme: Theme
   ink: string
 }>()
-const emit = defineEmits<{ change: ['feed' | 'grid'] }>()
+const emit = defineEmits<{
+  change: ['feed' | 'grid']
+  'theme-change': [Theme]
+}>()
 </script>
 
 <template>
@@ -26,15 +32,20 @@ const emit = defineEmits<{ change: ['feed' | 'grid'] }>()
     >
       <Icon name="lucide:layout-grid" size="18" />
     </button>
+    <button
+      type="button"
+      class="ls-btn"
+      :aria-label="theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'"
+      :title="theme === 'dark' ? 'Light mode' : 'Dark mode'"
+      @click="emit('theme-change', theme === 'dark' ? 'light' : 'dark')"
+    >
+      <Icon :name="theme === 'dark' ? 'lucide:sun' : 'lucide:moon'" size="18" />
+    </button>
   </div>
 </template>
 
 <style scoped>
 .layout-switcher {
-  position: fixed;
-  top: 24px;
-  right: 32px;
-  z-index: 30;
   display: flex;
   gap: 4px;
 }

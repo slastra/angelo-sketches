@@ -1,11 +1,10 @@
 /* Hand-drawn gallery — styles */
 
-@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600&family=Kalam:wght@300;400&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600&family=Kalam:wght@300;400&display=swap');
 
 :root {
-  --hand: 'Kalam', 'Caveat', cursive;
+  --hand: 'Kalam', cursive;
   --hand-display: 'Caveat', cursive;
-  --serif: 'EB Garamond', Georgia, serif;
   --ink: oklch(0.24 0.05 255);
   --ink-soft: color-mix(in oklch, var(--ink) 60%, transparent);
   --ink-faint: color-mix(in oklch, var(--ink) 30%, transparent);
@@ -17,7 +16,7 @@ html, body {
   margin: 0;
   padding: 0;
   height: 100%;
-  font-family: var(--serif);
+  font-family: var(--hand);
   color: var(--ink);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
@@ -36,6 +35,8 @@ body {
 
 .app {
   position: relative;
+  display: flex;
+  flex-direction: column;
   height: 100vh;
   width: 100vw;
   overflow: hidden;
@@ -44,10 +45,50 @@ body {
 /* Make sure paper background is below content */
 .paper-bg { z-index: 0; pointer-events: none; }
 
+/* ---- Top nav bar ---- */
+.gallery-nav {
+  position: relative;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex: 0 0 auto;
+  height: 56px;
+  padding: 0 32px;
+  background: color-mix(in oklch, currentColor 4%, transparent);
+  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
+  border-bottom: 0.5px solid color-mix(in oklch, currentColor 12%, transparent);
+}
+.gallery-nav .nav-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--hand-display);
+  font-size: 15px;
+  letter-spacing: 0.04em;
+  font-weight: 500;
+  opacity: 0.9;
+}
+.gallery-nav .nav-left .nav-name {
+  font-size: 22px;
+  line-height: 1;
+  font-weight: 600;
+}
+.gallery-nav .nav-left .nav-dot { opacity: 0.5; }
+.gallery-nav .nav-left .nav-sub { opacity: 0.75; font-size: 11px; }
+
+/* Dark mode: invert sketch images so dark-on-light scans become light-on-dark.
+   hue-rotate keeps any colored ink readable instead of flipping to its complement. */
+.app[data-theme="dark"] img {
+  filter: invert(1) hue-rotate(180deg);
+}
+
 .content {
   position: relative;
-  height: 100vh;
-  width: 100vw;
+  flex: 1 1 auto;
+  min-height: 0;
+  width: 100%;
   z-index: 1;
 }
 
@@ -64,11 +105,9 @@ body {
   top: 28px;
   left: 36px;
   z-index: 30;
-  font-family: var(--serif);
-  font-size: 13px;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  font-style: italic;
+  font-family: var(--hand-display);
+  font-size: 15px;
+  letter-spacing: 0.04em;
   font-weight: 500;
   opacity: 0.85;
   pointer-events: none;
@@ -77,6 +116,7 @@ body {
 .mark-name {
   font-family: var(--hand-display);
   font-size: 22px;
+  line-height: 1;
   letter-spacing: 0;
   font-style: normal;
   font-weight: 600;
@@ -125,7 +165,7 @@ body {
 
 /* ---- Feed layout ---- */
 .feed-scroller {
-  height: 100vh;
+  height: 100%;
   overflow-y: auto;
   scroll-snap-type: y mandatory;
   scroll-behavior: smooth;
@@ -134,7 +174,7 @@ body {
 .feed-scroller { -ms-overflow-style: none; scrollbar-width: none; }
 
 .feed-page-wrap {
-  height: 100vh;
+  height: 100%;
   scroll-snap-align: start;
   scroll-snap-stop: always;
   display: flex;
@@ -172,12 +212,10 @@ body {
   gap: 4px;
 }
 .meta-label {
-  font-family: var(--serif);
-  font-size: 10px;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  opacity: 0.45;
-  font-style: italic;
+  font-family: var(--hand-display);
+  font-size: 14px;
+  letter-spacing: 0.04em;
+  opacity: 0.5;
 }
 .meta-value {
   font-family: var(--hand);
@@ -224,9 +262,9 @@ body {
 
 /* ---- Grid layout ---- */
 .grid-view {
-  height: 100vh;
+  height: 100%;
   overflow-y: auto;
-  padding: 90px 60px 60px;
+  padding: 40px 60px 60px;
 }
 .grid-view::-webkit-scrollbar { width: 8px; }
 .grid-view::-webkit-scrollbar-track { background: transparent; }
@@ -398,14 +436,20 @@ body {
 
 /* ---- Responsive tweaks ---- */
 @media (max-width: 900px) {
+  .gallery-nav { padding: 0 16px; height: 52px; }
+  .gallery-nav .nav-left .nav-name { font-size: 19px; }
+  .gallery-nav .nav-left .nav-sub { font-size: 10px; }
+
   .feed-inner {
     grid-template-columns: 1fr;
-    gap: 16px;
-    padding: 60px 24px;
+    gap: 14px;
+    padding: 24px 16px;
   }
-  .feed-margin { flex-direction: row; padding: 0 !important; gap: 20px; flex-wrap: wrap; align-items: flex-start !important; text-align: left !important; }
+  .feed-margin { flex-direction: row; padding: 0 !important; gap: 18px; flex-wrap: wrap; align-items: flex-start !important; text-align: left !important; }
   .feed-margin.right { padding-top: 0 !important; }
   .feed-margin.left { padding-bottom: 0 !important; }
-  .corner-mark { top: 16px; left: 20px; }
-  .counter { bottom: 20px; right: 20px; }
+
+  .grid-view { padding: 24px 20px 60px; }
+
+  .counter { bottom: 16px; right: 16px; }
 }

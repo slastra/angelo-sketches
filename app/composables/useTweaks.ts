@@ -20,11 +20,14 @@ export const INK_COLORS = {
 
 export type InkKey = keyof typeof INK_COLORS
 
+export type Theme = 'light' | 'dark'
+
 export interface TweakState {
   paperTexture: PaperKey
   inkColor: InkKey
   layout: 'feed' | 'grid'
   animateIn: boolean
+  theme: Theme
 }
 
 const DEFAULTS: TweakState = {
@@ -32,7 +35,13 @@ const DEFAULTS: TweakState = {
   inkColor: 'black',
   layout: 'feed',
   animateIn: true,
+  theme: 'light',
 }
+
+// Dark-mode ink and paper. Light values come from INK_COLORS / PAPER_TEXTURES.
+export const DARK_INK = 'oklch(0.94 0 0)'
+export const DARK_PAPER_BG = '#16161a'
+export const DARK_PAPER_LINE = 'rgba(255, 255, 255, 0.08)'
 
 // Bumped to invalidate older sessions that persisted dot-grid / navy tweaks.
 const KEY = 'angelo.tweaks.v2'
@@ -45,10 +54,10 @@ export function useTweaks() {
       try {
         const raw = localStorage.getItem(KEY)
         if (raw) {
-          const parsed = JSON.parse(raw) as { layout?: string }
-          // Only `layout` is user-tweakable now; paper/ink are locked.
+          const parsed = JSON.parse(raw) as { layout?: string, theme?: string }
           const layout = parsed.layout === 'feed' || parsed.layout === 'grid' ? parsed.layout : DEFAULTS.layout
-          state.value = { ...DEFAULTS, layout }
+          const theme: Theme = parsed.theme === 'dark' ? 'dark' : 'light'
+          state.value = { ...DEFAULTS, layout, theme }
         }
       } catch { /* ignore */ }
     })

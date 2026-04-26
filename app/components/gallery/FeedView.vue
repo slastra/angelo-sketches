@@ -15,7 +15,11 @@ const FEED_MAX_W = 560
 // tall a frame can be before it crowds the bottom of the viewport.
 const NAV_H = 56
 // Vertical breathing room reserved per page beyond the nav (top + bottom).
-const FEED_V_PAD = 120
+// On mobile the meta blocks stack above and below the frame, so we need
+// significantly more room to keep the frame vertically centred.
+const FEED_V_PAD_DESKTOP = 120
+const FEED_V_PAD_MOBILE = 260
+const MOBILE_BREAKPOINT = 900
 
 // Track viewport so portrait sketches don't overflow short windows and so
 // the frame width shrinks below 560 on narrow screens.
@@ -27,8 +31,10 @@ function updateViewport() {
 }
 
 const sized = computed(() => {
+  const isMobile = viewportW.value < MOBILE_BREAKPOINT
+  const vPad = isMobile ? FEED_V_PAD_MOBILE : FEED_V_PAD_DESKTOP
   const maxW = Math.max(240, Math.min(FEED_MAX_W, viewportW.value - 32))
-  const maxH = Math.max(280, viewportH.value - NAV_H - FEED_V_PAD)
+  const maxH = Math.max(220, viewportH.value - NAV_H - vPad)
   return props.sketches.map(s => ({
     sketch: s,
     ...sizeWithin(s.width, s.height, maxW, maxH),

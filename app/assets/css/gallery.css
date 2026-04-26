@@ -62,21 +62,22 @@ body {
 }
 .gallery-nav .nav-left {
   display: flex;
-  align-items: center;
-  gap: 10px;
-  font-family: var(--hand-display);
-  font-size: 15px;
-  letter-spacing: 0.04em;
-  font-weight: 500;
-  opacity: 0.9;
+  align-items: baseline;
+  gap: 12px;
 }
 .gallery-nav .nav-left .nav-name {
+  font-family: var(--hand-display);
   font-size: 22px;
   line-height: 1;
   font-weight: 600;
 }
-.gallery-nav .nav-left .nav-dot { opacity: 0.5; }
-.gallery-nav .nav-left .nav-sub { opacity: 0.75; font-size: 11px; }
+.gallery-nav .nav-left .nav-sub {
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  opacity: 0.55;
+  font-style: italic;
+}
 
 /* Dark mode: invert sketch images so dark-on-light scans become light-on-dark.
    hue-rotate keeps any colored ink readable instead of flipping to its complement. */
@@ -437,8 +438,9 @@ body {
 /* ---- Responsive tweaks ---- */
 @media (max-width: 900px) {
   .gallery-nav { padding: 0 16px; height: 52px; }
+  .gallery-nav .nav-left { gap: 10px; }
   .gallery-nav .nav-left .nav-name { font-size: 19px; }
-  .gallery-nav .nav-left .nav-sub { font-size: 10px; }
+  .gallery-nav .nav-left .nav-sub { font-size: 10px; letter-spacing: 0.16em; }
 
   .feed-inner {
     grid-template-columns: 1fr;

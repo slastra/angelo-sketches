@@ -26,7 +26,6 @@ function setTheme(v: Theme) {
     <header class="gallery-nav">
       <div class="nav-left">
         <span class="nav-name">Angelo</span>
-        <span class="nav-dot" aria-hidden="true">·</span>
         <span class="nav-sub">sketches, 2026</span>
       </div>
       <LayoutSwitcher

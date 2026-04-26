@@ -447,36 +447,34 @@ body {
   .gallery-nav .nav-left .nav-name { font-size: 19px; }
   .gallery-nav .nav-left .nav-sub { font-size: 10px; letter-spacing: 0.16em; }
 
-  /* Mobile: take the meta blocks out of flow so the frame always sits at
-     the visual middle of the page, even when meta-right is empty (no tags). */
+  /* Mobile: stack [meta-left, frame, meta-right] in a flex column and centre
+     the whole group vertically. The meta-left stays attached just above the
+     image, and the group keeps the image close to the page mid-line. */
   .feed-inner {
-    display: block;
-    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     width: 100%;
     height: 100%;
-    padding: 0;
+    padding: 24px 16px;
+    gap: 14px;
   }
   .feed-margin {
-    position: absolute;
-    left: 16px;
-    right: 16px;
+    flex: 0 0 auto;
     flex-direction: row;
     flex-wrap: wrap;
     gap: 18px;
     padding: 0 !important;
     align-items: flex-start !important;
     text-align: left !important;
-    z-index: 1;
   }
-  .feed-margin.left { top: 24px; padding-bottom: 0 !important; }
-  .feed-margin.right { bottom: 60px; padding-top: 0 !important; }
+  .feed-margin.left { padding-bottom: 0 !important; }
+  .feed-margin.right { padding-top: 0 !important; }
   .feed-frame-wrap {
-    position: absolute;
-    inset: 0;
+    flex: 0 0 auto;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 16px;
   }
 
   .grid-view { padding: 24px 20px 60px; }

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { Sketch } from '~/composables/useSketches'
+import { sizeWidth } from '~/utils/aspect'
 
 const props = defineProps<{
   sketches: Sketch[]
@@ -8,6 +9,13 @@ const props = defineProps<{
 }>()
 
 const emit = defineEmits<{ zoom: [Sketch], 'index-change': [number] }>()
+
+const FEED_MAX_W = 560
+
+const sized = computed(() => props.sketches.map(s => ({
+  sketch: s,
+  ...sizeWidth(s.width, s.height, FEED_MAX_W),
+})))
 
 const scrollerRef = ref<HTMLElement | null>(null)
 let observer: IntersectionObserver | null = null
@@ -36,8 +44,8 @@ function pad(n: number) { return String(n + 1).padStart(2, '0') }
 <template>
   <div ref="scrollerRef" class="feed-scroller">
     <div
-      v-for="(s, i) in sketches"
-      :key="s.id"
+      v-for="(item, i) in sized"
+      :key="item.sketch.id"
       :data-index="i"
       class="feed-page-wrap"
     >
@@ -53,7 +61,7 @@ function pad(n: number) { return String(n + 1).padStart(2, '0') }
             </div>
             <div class="margin-block">
               <div class="meta-label">drawn</div>
-              <div class="meta-value handwritten">{{ s.date }}</div>
+              <div class="meta-value handwritten">{{ item.sketch.date }}</div>
             </div>
           </div>
 
@@ -62,17 +70,17 @@ function pad(n: number) { return String(n + 1).padStart(2, '0') }
             role="button"
             tabindex="0"
             :aria-label="`Zoom into sketch ${pad(i)}`"
-            @click="emit('zoom', s)"
-            @keydown.enter.prevent="emit('zoom', s)"
-            @keydown.space.prevent="emit('zoom', s)"
+            @click="emit('zoom', item.sketch)"
+            @keydown.enter.prevent="emit('zoom', item.sketch)"
+            @keydown.space.prevent="emit('zoom', item.sketch)"
           >
             <SketchFrame
-              :width="540"
-              :height="700"
-              :seed="s.id"
+              :width="item.w"
+              :height="item.h"
+              :seed="item.sketch.id"
               :ink="ink"
-              :image="s.image"
-              :content-label="s.date"
+              :image="item.sketch.image"
+              :content-label="item.sketch.date"
             />
             <div class="zoom-hint handwritten" :style="{ color: ink }">↗ click to zoom</div>
           </div>
@@ -80,7 +88,7 @@ function pad(n: number) { return String(n + 1).padStart(2, '0') }
           <div class="feed-margin right">
             <div class="margin-block">
               <div class="meta-label">tags</div>
-              <div v-for="t in s.tags" :key="t" class="tag-line handwritten">{{ t }}</div>
+              <div v-for="t in item.sketch.tags" :key="t" class="tag-line handwritten">{{ t }}</div>
             </div>
           </div>
         </div>

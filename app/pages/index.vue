@@ -51,13 +51,6 @@ const list = computed(() => sketches.value || [])
           :animate="tweaks.animateIn"
           @zoom="zoomed = $event"
         />
-        <GalleryScatteredView
-          v-else-if="tweaks.layout === 'scattered'"
-          :sketches="list"
-          :ink="ink"
-          :animate="tweaks.animateIn"
-          @zoom="zoomed = $event"
-        />
       </template>
     </main>
 

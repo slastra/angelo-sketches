@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { Sketch } from '~/composables/useSketches'
+import { sizeWithin } from '~/utils/aspect'
 
 const props = defineProps<{ sketch: Sketch | null, ink: string }>()
 const emit = defineEmits<{ close: [] }>()
@@ -7,20 +8,18 @@ const emit = defineEmits<{ close: [] }>()
 const dims = ref({ w: 540, h: 700 })
 
 function recompute() {
-  if (!import.meta.client) return
-  const maxW = Math.min(window.innerWidth - 220, 820)
-  const maxH = Math.min(window.innerHeight - 180, 1080)
-  const w = Math.max(240, maxW)
-  const h = Math.min(maxH, w * 1.3)
-  dims.value = { w, h }
+  if (!import.meta.client || !props.sketch) return
+  const maxW = Math.max(280, window.innerWidth - 220)
+  const maxH = Math.max(280, window.innerHeight - 180)
+  dims.value = sizeWithin(props.sketch.width, props.sketch.height, maxW, maxH)
 }
 
 function onKey(e: KeyboardEvent) {
   if (e.key === 'Escape') emit('close')
 }
 
-watch(() => props.sketch, (s) => {
-  if (s && import.meta.client) {
+watch(() => props.sketch?.id, (id) => {
+  if (id && import.meta.client) {
     recompute()
     document.body.style.overflow = 'hidden'
     window.addEventListener('keydown', onKey)

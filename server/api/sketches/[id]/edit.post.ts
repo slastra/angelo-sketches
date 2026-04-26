@@ -31,7 +31,11 @@ export default defineEventHandler(async (event) => {
   const out = await pipeline.toBuffer()
   writeFileSync(join(UPLOAD_DIR, row.image_path), out)
 
-  db.run('UPDATE sketches SET version = version + 1 WHERE id = ?', [id])
+  const meta = await sharp(out).metadata()
+  db.run(
+    'UPDATE sketches SET version = version + 1, width = ?, height = ? WHERE id = ?',
+    [meta.width || 0, meta.height || 0, id],
+  )
   const updated = db.query('SELECT * FROM sketches WHERE id = ?').get(id) as SketchRow
   return rowToSketch(updated)
 })

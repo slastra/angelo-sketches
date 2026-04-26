@@ -69,7 +69,6 @@ const inkOptions = Object.keys(INK_COLORS).map(k => ({ value: k as InkKey, label
 const layoutOptions = [
   { value: 'feed', label: 'Feed' },
   { value: 'grid', label: 'Grid' },
-  { value: 'scattered', label: 'Scattered' },
 ] as const
 
 function set<K extends keyof TweakState>(key: K, v: TweakState[K]) {

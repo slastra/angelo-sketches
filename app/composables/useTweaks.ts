@@ -23,7 +23,7 @@ export type InkKey = keyof typeof INK_COLORS
 export interface TweakState {
   paperTexture: PaperKey
   inkColor: InkKey
-  layout: 'feed' | 'grid' | 'scattered'
+  layout: 'feed' | 'grid'
   animateIn: boolean
 }
 
@@ -43,7 +43,12 @@ export function useTweaks() {
     onMounted(() => {
       try {
         const raw = localStorage.getItem(KEY)
-        if (raw) state.value = { ...DEFAULTS, ...JSON.parse(raw) }
+        if (raw) {
+          const parsed = JSON.parse(raw) as Partial<TweakState> & { layout?: string }
+          // Coerce removed layout values from older sessions.
+          if (parsed.layout !== 'feed' && parsed.layout !== 'grid') parsed.layout = 'grid'
+          state.value = { ...DEFAULTS, ...(parsed as Partial<TweakState>) }
+        }
       } catch { /* ignore */ }
     })
     watch(state, (v) => {

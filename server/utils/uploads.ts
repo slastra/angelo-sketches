@@ -18,11 +18,17 @@ const MIME_TO_EXT: Record<string, string> = {
   'image/avif': 'avif',
 }
 
+export interface StoredImage {
+  name: string
+  width: number
+  height: number
+}
+
 export async function processAndStore(
   id: string,
   buffer: ArrayBuffer | Buffer,
   mimeType: string,
-): Promise<string> {
+): Promise<StoredImage> {
   const ext = MIME_TO_EXT[mimeType.toLowerCase()]
   if (!ext) throw createError({ statusCode: 400, statusMessage: `unsupported image type: ${mimeType}` })
 
@@ -34,7 +40,6 @@ export async function processAndStore(
     .rotate() // honor EXIF orientation, then strip below
     .resize({ width: 2400, height: 2400, fit: 'inside', withoutEnlargement: true })
 
-  // Re-encode to strip EXIF and shrink jpeg/png; pass-through webp/avif
   if (ext === 'jpg') pipeline = pipeline.jpeg({ quality: 88, mozjpeg: true })
   else if (ext === 'png') pipeline = pipeline.png({ compressionLevel: 9 })
   else if (ext === 'webp') pipeline = pipeline.webp({ quality: 88 })
@@ -42,7 +47,15 @@ export async function processAndStore(
 
   const out = await pipeline.toBuffer()
   writeFileSync(outPath, out)
-  return outName
+
+  // Re-read to get final dimensions (sharp's pipeline.metadata() reflects the
+  // source, not the post-resize output, so probe the written buffer).
+  const meta = await sharp(out).metadata()
+  return {
+    name: outName,
+    width: meta.width || 0,
+    height: meta.height || 0,
+  }
 }
 
 export function deleteUpload(name: string | null | undefined) {

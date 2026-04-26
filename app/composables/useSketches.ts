@@ -7,6 +7,8 @@ export interface Sketch {
   pinned: boolean
   position: number
   version: number
+  width: number | null
+  height: number | null
 }
 
 export function useSketches() {

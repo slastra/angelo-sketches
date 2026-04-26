@@ -51,8 +51,8 @@ export default defineEventHandler(async (event) => {
   const next = db.query('SELECT COALESCE(MAX(position), -1) + 1 AS next FROM sketches').get() as { next: number }
 
   db.run(
-    'INSERT INTO sketches (id, date, date_iso, tags, image_path, position) VALUES (?, ?, ?, ?, ?, ?)',
-    [id, parts.display, parts.iso, JSON.stringify(tags), stored, next.next],
+    'INSERT INTO sketches (id, date, date_iso, tags, image_path, position, width, height) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
+    [id, parts.display, parts.iso, JSON.stringify(tags), stored.name, next.next, stored.width, stored.height],
   )
 
   const row = db.query('SELECT * FROM sketches WHERE id = ?').get(id) as SketchRow

@@ -96,7 +96,7 @@ const frame = computed(() => {
         :src="image"
         loading="lazy"
         alt=""
-        :style="{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }"
+        :style="{ width: '100%', height: '100%', objectFit: 'contain', display: 'block' }"
       >
       <SketchPlaceholder
         v-else

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { Sketch } from '~/composables/useSketches'
-import { sizeWidth } from '~/utils/aspect'
+import { sizeWithin } from '~/utils/aspect'
 
 const props = defineProps<{
   sketches: Sketch[]
@@ -11,16 +11,28 @@ const props = defineProps<{
 const emit = defineEmits<{ zoom: [Sketch], 'index-change': [number] }>()
 
 const FEED_MAX_W = 560
+// Vertical breathing room reserved per page: top/bottom padding so a frame
+// never crowds against the corner mark or the bottom counter.
+const FEED_V_PAD = 120
 
-const sized = computed(() => props.sketches.map(s => ({
-  sketch: s,
-  ...sizeWidth(s.width, s.height, FEED_MAX_W),
-})))
+// Track viewport height so portrait sketches don't overflow short windows.
+const viewportH = ref(900)
+function updateViewport() { viewportH.value = window.innerHeight }
+
+const sized = computed(() => {
+  const maxH = Math.max(280, viewportH.value - FEED_V_PAD)
+  return props.sketches.map(s => ({
+    sketch: s,
+    ...sizeWithin(s.width, s.height, FEED_MAX_W, maxH),
+  }))
+})
 
 const scrollerRef = ref<HTMLElement | null>(null)
 let observer: IntersectionObserver | null = null
 
 onMounted(() => {
+  updateViewport()
+  window.addEventListener('resize', updateViewport)
   if (!scrollerRef.value) return
   observer = new IntersectionObserver(
     (entries) => {
@@ -36,7 +48,10 @@ onMounted(() => {
   scrollerRef.value.querySelectorAll('.feed-page-wrap').forEach(p => observer!.observe(p))
 })
 
-onBeforeUnmount(() => observer?.disconnect())
+onBeforeUnmount(() => {
+  if (import.meta.client) window.removeEventListener('resize', updateViewport)
+  observer?.disconnect()
+})
 
 function pad(n: number) { return String(n + 1).padStart(2, '0') }
 </script>

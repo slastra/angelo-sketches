@@ -21,7 +21,6 @@ async function submit() {
 <template>
   <div class="app">
     <PaperBackground texture="graph" />
-    <CornerMark ink="oklch(0.18 0.01 270)" />
 
     <main class="login-wrap">
       <JitteredBorder seed="login-card" :stroke-width="1.1" :jitter="1.4" :double-stroke="true" class="login-card">

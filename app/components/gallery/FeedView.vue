@@ -86,7 +86,7 @@ function pad(n: number) { return String(n + 1).padStart(2, '0') }
           </div>
 
           <div class="feed-margin right">
-            <div class="margin-block">
+            <div v-if="item.sketch.tags.length" class="margin-block">
               <div class="meta-label">tags</div>
               <div v-for="t in item.sketch.tags" :key="t" class="tag-line handwritten">{{ t }}</div>
             </div>

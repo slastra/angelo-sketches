@@ -80,9 +80,14 @@ body {
 }
 
 /* Dark mode: invert sketch images so dark-on-light scans become light-on-dark.
-   hue-rotate keeps any colored ink readable instead of flipping to its complement. */
+   hue-rotate keeps any colored ink readable instead of flipping to its complement.
+   The frame gets a solid dark fill so the inverted image edges blend cleanly
+   with the box (otherwise the dot grid shows through any aspect mismatch). */
 .app[data-theme="dark"] img {
   filter: invert(1) hue-rotate(180deg);
+}
+.app[data-theme="dark"] .sketch-frame {
+  background: #16161a;
 }
 
 .content {

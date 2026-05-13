@@ -280,11 +280,18 @@ body {
 }
 
 .grid-inner {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  display: flex;
   gap: 50px;
   max-width: 1400px;
   margin: 0 auto;
+  align-items: flex-start;
+  justify-content: center;
+}
+.grid-col {
+  display: flex;
+  flex-direction: column;
+  gap: 50px;
+  flex: 0 0 auto;
 }
 
 .grid-cell {

@@ -9,7 +9,14 @@ const ink = computed(() => tweaks.value.theme === 'dark' ? DARK_INK : INK_COLORS
 const zoomed = ref<Sketch | null>(null)
 const feedIndex = ref(0)
 
-const list = computed(() => sketches.value || [])
+const list = computed(() => {
+  const arr = [...(sketches.value || [])]
+  arr.sort((a, b) => {
+    if (a.pinned !== b.pinned) return a.pinned ? -1 : 1
+    return b.dateIso.localeCompare(a.dateIso)
+  })
+  return arr
+})
 
 function setLayout(v: 'feed' | 'grid') {
   setTweak('layout', v)

@@ -11,20 +11,20 @@
     "typecheck": "nuxt typecheck"
   },
   "dependencies": {
-    "@iconify-json/lucide": "^1.2.103",
-    "@nuxt/icon": "^2.2.1",
-    "@nuxt/ui": "^4.6.1",
-    "nanoid": "^5.1.6",
-    "nuxt": "^4.4.2",
-    "sharp": "^0.33.5",
-    "vue": "^3.5.30",
+    "@iconify-json/lucide": "^1.2.129",
+    "@nuxt/icon": "^2.5.1",
+    "@nuxt/ui": "^4.11.0",
+    "nanoid": "^6.0.1",
+    "nuxt": "^4.5.2",
+    "sharp": "^0.35.4",
+    "vue": "^3.5.42",
     "vue-advanced-cropper": "^2.8.9",
-    "vue-router": "^5.0.3"
+    "vue-router": "^5.3.1"
   },
   "devDependencies": {
-    "@types/bun": "^1.2.13",
-    "@types/node": "^22.10.0",
+    "@types/bun": "^1.4.1",
+    "@types/node": "^22.20.1",
     "typescript": "^5.9.3",
-    "vue-tsc": "^3.2.6"
+    "vue-tsc": "^3.3.11"
   }
 }

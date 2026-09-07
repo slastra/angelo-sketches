@@ -15,7 +15,7 @@ A personal sketch gallery + admin dashboard for Angelo. Hand-drawn aesthetic on 
 
 ```bash
 cp .env.example .env
-# set APP_PASSWORD and a SESSION_SECRET (openssl rand -hex 32)
+# set NUXT_APP_PASSWORD and a NUXT_SESSION_SECRET (openssl rand -hex 32)
 bun install
 bun run dev
 ```
@@ -26,7 +26,7 @@ Visit `http://localhost:3000/` for the gallery, `/admin` for the dashboard (pass
 
 ```bash
 bun run build
-bun --bun .output/server/index.mjs
+NUXT_APP_PASSWORD=... NUXT_SESSION_SECRET=... bun --bun .output/server/index.mjs
 ```
 
 The server uses `bun:sqlite`, so the runtime **must be bun** — do not run `node .output/server/index.mjs`.
@@ -39,9 +39,24 @@ Required environment variables (set them in Coolify, never commit them):
 
 | Var | Notes |
 | --- | --- |
-| `APP_PASSWORD` | The single password for `/admin` |
-| `SESSION_SECRET` | 32-byte hex (`openssl rand -hex 32`) — signs the session cookie |
+| `NUXT_APP_PASSWORD` | The single password for `/admin` |
+| `NUXT_SESSION_SECRET` | 32-byte hex (`openssl rand -hex 32`) — signs the session cookie |
 | `PORT` | Provided by Coolify automatically |
+
+### How the env vars are read
+
+Nuxt's `runtimeConfig` is resolved in two places, and the variable name decides which:
+
+- **`NUXT_APP_PASSWORD` / `NUXT_SESSION_SECRET`** are read by the server **at runtime**. This is the
+  reliable form: it works in dev, in `bun --bun .output/server/index.mjs`, and in Coolify regardless
+  of whether the var is marked build-time or runtime.
+- **`APP_PASSWORD` / `SESSION_SECRET`** (no prefix) are only read by `nuxt.config.ts` **at build time**
+  and baked into the bundle. They work in dev (Nuxt loads `.env` before evaluating the config) and in
+  Coolify *only if the var is available to the build*. Set as runtime-only, they are silently ignored
+  and every login fails with "Wrong password".
+
+The current Coolify app uses the unprefixed names marked as build-time vars, so it works — but it also
+means changing the password requires a rebuild, not a restart. Prefer the `NUXT_` names for anything new.
 
 **Persistent volume:** Mount a Coolify volume to `/app/.data`. This holds the SQLite db (`angelo.db`) and uploaded images (`uploads/<id>.<ext>`). Without it, every deploy wipes Angelo's sketches.
 
